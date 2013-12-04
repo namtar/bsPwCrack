@@ -1,0 +1,33 @@
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/bin/bash
+daemon:x:2:2:Daemon:/sbin:/bin/bash
+lp:x:4:7:Printing daemon:/var/spool/lpd:/bin/bash
+mail:x:8:12:Mailer daemon:/var/spool/clientmqueue:/bin/false
+news:x:9:13:News system:/etc/news:/bin/bash
+uucp:x:10:14:Unix-to-Unix CoPy system:/etc/uucp:/bin/bash
+games:x:12:100:Games account:/var/games:/bin/bash
+man:x:13:62:Manual pages viewer:/var/cache/man:/bin/bash
+at:x:25:25:Batch jobs daemon:/var/spool/atjobs:/bin/bash
+wwwrun:x:30:65534:WWW daemon apache:/var/lib/wwwrun:/bin/bash
+squid:x:31:65534:WWW-proxy squid:/var/cache/squid:/bin/false
+irc:x:39:65534:IRC daemon:/usr/lib/ircd:/bin/bash
+ftp:x:40:49:FTP account:/srv/ftp:/bin/bash
+named:x:44:44:Name server daemon:/var/lib/named:/bin/false
+gdm:x:50:15:Gnome Display Manager daemon:/var/lib/gdm:/bin/bash
+postfix:x:51:51:Postfix Daemon:/var/spool/postfix:/bin/false
+mysql:x:60:2:MySQL database admin:/var/lib/mysql:/bin/false
+pop:x:67:100:POP admin:/var/lib/pop:/bin/false
+sshd:x:71:65:SSH daemon:/var/lib/sshd:/bin/false
+mailman:x:72:67:GNU mailing list manager:/var/lib/mailman:/bin/bash
+ldap:x:76:70:User for OpenLDAP:/var/lib/ldap:/bin/bash
+bigsister:x:100:101:Big Sister:/var/lib/bs:/bin/false
+nobody:x:65534:65533:nobody:/var/lib/nobody:/bin/bash
+bmesser:x:500:100:Burkhard Messer:/home/bmesser:/bin/bash
+aalles:x:501:100:Albert Alles:/home/aalles:/bin/bash
+bbutter:x:502:100:Bernhard Butter:/home/bbutter:/bin/bash
+ccarviar:x:503:100:Charles Caviar:/home/ccarviar:/bin/bash
+ddosseh:x:504:100:Dorothea Dossenhoefer:/home/ddosseh:/bin/bash
+eentenh:x:505:100:Egon Entenhauser:/home/eentenh:/bin/bash
+ffunsb:x:506:100:Fredericke Funsbuettel:/home/ffunsb:/bin/bash
+gganzt:x:507:100:Gustav Ganztanz:/home/gganzt:/bin/bash
+hheisen:x:508:100:Hainrich Heisenhoefer:/home/hheisen:/bin/bash
