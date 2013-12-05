@@ -14,7 +14,7 @@
 
 /***** Passwords *****/
 
-char *aalles = "0Y5vGFrD8uNxc"; // 2 chars
+char *aalles = "0Y5vGFrD8uNxc"; // 2 chars tJ
 char *bbutter = "C.j.k/uXnSBoQ:12352"; // 3 chars
 char *ccarviar = "BxsNoy21Sx2.E"; // 4 chars
 char *ddosseh = "I8kHQttv3SK9s"; // 5 chars
@@ -73,10 +73,10 @@ int main(int argc, char** argv) {
     // time import to measure the time in seconds
     int LOOP_ZERO = 0;
 
-    char tryPassword[5]; // remember, this must be by one greater than the lenght of the password to check.
+    char tryPassword[4]; // remember, this must be by one greater than the lenght of the password to check.
     tryPassword[sizeof (tryPassword) - 1] = '\0';
-//    (sizeof (tryPassword) - 1)
-    doLoop(4, LOOP_ZERO, tryPassword, ccarviar);
+    int numberOfPlaces = (sizeof (tryPassword) - 1);
+    doLoop(numberOfPlaces, LOOP_ZERO, tryPassword, bbutter);
     printf("Loops done: %i\n", loopsStarted);
     printf("Number of chars: %i\n", places);
 
