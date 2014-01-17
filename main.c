@@ -19,8 +19,8 @@
 /***** Passwords *****/
 
 char *aalles = "0Y5vGFrD8uNxc"; // 2 chars tJ
-char *bbutter = "C.j.k/uXnSBoQ"; // 3 chars
-char *ccarviar = "BxsNoy21Sx2.E"; // 4 chars a7L
+char *bbutter = "C.j.k/uXnSBoQ"; // 3 chars a7L
+char *ccarviar = "BxsNoy21Sx2.E"; // 4 chars 
 char *ddosseh = "I8kHQttv3SK9s"; // 5 chars
 char *eentenh = "i72jb/7VtyMng"; // 6 chars
 char *ffunsb = "j6v/ER.8YW2hA"; // 7 chars
@@ -97,7 +97,7 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     }
 
-    char tryPassword[4]; // remember, this must be by one greater than the lenght of the password to check.
+    char tryPassword[5]; // remember, this must be by one greater than the lenght of the password to check.
     tryPassword[sizeof (tryPassword) - 1] = '\0';
     int numberOfPlaces = (sizeof (tryPassword) - 1);
 
@@ -110,15 +110,16 @@ int main(int argc, char** argv) {
         printf("Start forking\n");
 
         startValue = endValue;
-        endValue += interval;
+        endValue += interval + 1;
         if (endValue > sizeof (characters)) {
             endValue = sizeof (characters);
         }
-        //printf("Startvalue: %i\n", startValue);
-        //printf("Endvalue: %i\n", endValue);
+        printf("Startvalue: %i\n", startValue);
+        printf("Endvalue: %i\n", endValue);
 
         int pid = fork();
         pids[i] = pid;
+        printf("Pid: %i\n",pid);
         if (pid == 0) {
             // i am a child
             // close unneeded pipe read channel
@@ -126,7 +127,7 @@ int main(int argc, char** argv) {
             // do cracking
             // write in pipe when password was found
             int LOOP_ZERO = 0;
-            doLoop(numberOfPlaces, LOOP_ZERO, tryPassword, bbutter);
+            doLoop(numberOfPlaces, LOOP_ZERO, tryPassword, ccarviar);
 
             printf("Write found password: %s\n", foundPassword);
             if (strlen(foundPassword) > 0) {
@@ -146,7 +147,7 @@ int main(int argc, char** argv) {
             }
 
             printf("The found password is: %s\n", returnedPassword);
-
+            close(pipeFds[1]);
         } else {
             printf("Fehler beim Fork");
             return EXIT_FAILURE;
@@ -182,8 +183,10 @@ void doLoop(int numberOfPlaces, int loopNumber, char *tryPassword, char *passwor
     char salt[3];
     salt[0] = passwordToCrack[0];
     salt[1] = passwordToCrack[1];
-    salt[2] = '\0';    
+    salt[2] = '\0';
 
+    printf("Startvalue: %i\n", startValue);
+    printf("Endvalue: %i\n", endValue);
     // this is only for loop zero. This loop has to mention the start and end value
     int i;
     for (i = startValue; i < endValue; i++) {
