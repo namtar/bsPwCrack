@@ -20,7 +20,7 @@
 
 char *aalles = "0Y5vGFrD8uNxc"; // 2 chars tJ
 char *bbutter = "C.j.k/uXnSBoQ"; // 3 chars a7L
-char *ccarviar = "BxsNoy21Sx2.E"; // 4 chars 
+char *ccarviar = "BxsNoy21Sx2.E"; // 4 chars Q9vX
 char *ddosseh = "I8kHQttv3SK9s"; // 5 chars
 char *eentenh = "i72jb/7VtyMng"; // 6 chars
 char *ffunsb = "j6v/ER.8YW2hA"; // 7 chars
@@ -42,32 +42,10 @@ char foundPassword[20];
 
 /** Prototypes **/
 
-void getSalt(char *encryptedPassword, char *salt);
 void getChar(char *character, int index);
 
 void doLoop(int numberOfPlaces, int loopNumber, char *tryPassword, char *passwordToCrack);
 void subLoop(int numberOfPlaces, int loopNumber, char *tryPassword, char *passwordToCrack);
-
-void doCrypting(char *encryptedPW, int numberOfPlaces) {
-
-    //    char *salt;
-    //
-    //    getSalt(encryptedPW, salt);
-    // TODO: kann sein dass man statt dem salt das verschlüsselte password übergeben darf.
-    // numberOfPlaces determines how much loops are to open.
-    int loopsStarted = 0;
-    char tryPassword[numberOfPlaces];
-    int placeIndexes[numberOfPlaces];
-
-    // rekursion
-
-    //    char result = crypt(tryPassword, encryptedPW);
-    //    if (strcmp(result, encryptedPW) == 0) {
-    // password matched
-    // stop threads
-    // display matched password
-    //    }
-}
 
 /*
  * Main function.
@@ -97,13 +75,14 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     }
 
-    char tryPassword[5]; // remember, this must be by one greater than the lenght of the password to check.
+    char tryPassword[6]; // remember, this must be by one greater than the lenght of the password to check.
     tryPassword[sizeof (tryPassword) - 1] = '\0';
     int numberOfPlaces = (sizeof (tryPassword) - 1);
 
     int interval = sizeof (characters) / numberOfCpu;
     printf("Interval: %i\n", interval);
 
+    int pid;
     int i;
     for (i = 0; i < numberOfCpu; i++) {
 
@@ -114,62 +93,61 @@ int main(int argc, char** argv) {
         if (endValue > sizeof (characters)) {
             endValue = sizeof (characters);
         }
-        printf("Startvalue: %i\n", startValue);
-        printf("Endvalue: %i\n", endValue);
+        printf("Startvalue General: %i\n", startValue);
+        printf("Endvalue General: %i\n", endValue);
 
-        int pid = fork();
+        pid = fork();
         pids[i] = pid;
-        printf("Pid: %i\n",pid);
+        printf("Fork returned Pid: %i at increment %i\n", pid, i);
         if (pid == 0) {
+            printf("Start child\n");
+            wait(5);
             // i am a child
             // close unneeded pipe read channel
             close(pipeFds[0]);
             // do cracking
             // write in pipe when password was found
             int LOOP_ZERO = 0;
-            doLoop(numberOfPlaces, LOOP_ZERO, tryPassword, ccarviar);
+            doLoop(numberOfPlaces, LOOP_ZERO, tryPassword, ddosseh);
 
-            printf("Write found password: %s\n", foundPassword);
+            //            printf("Write found password: %s\n", foundPassword);
             if (strlen(foundPassword) > 0) {
-                write(pipeFds[1], &foundPassword, strlen(foundPassword));
+                printf("Write to Pipe\n\n");
+                write(pipeFds[1], foundPassword, sizeof (foundPassword));
             }
             close(pipeFds[1]);
             exit(EXIT_SUCCESS);
-        } else if (pid > 0) {
-            // i am a parent
-            close(pipeFds[1]); // close unneeded write channel
-            char returnedPassword[20];
-            // read pipe and terminate childs if password was found
-            read(pipeFds[0], returnedPassword, sizeof (returnedPassword));
-            int i;
-            for (i = 0; i < numberOfCpu; i++) {
-                kill(pids[i], 1); // send sigterm to childs
-            }
-
-            printf("The found password is: %s\n", returnedPassword);
-            close(pipeFds[1]);
-        } else {
+        } else if (pid < 0) {
             printf("Fehler beim Fork");
             return EXIT_FAILURE;
         }
     }
 
+    if (sizeof (pids) / sizeof (int) > 0 && pid != 0) {
+        // i am a parent
+        //            wait(NULL);
+        printf("Pid of Child: %i\n", pid);
+        int i;
+        printf("Anzahl der Pids: %i\n", sizeof (pids) / sizeof (int));
+        //            for(i = 0; i < sizeof(pids) / sizeof(int); i++) {
+        //                wait(&pids[i]);
+        //            }
+        close(pipeFds[1]); // close unneeded write channel
+        char returnedPassword[20];
+        returnedPassword[0] = '\0';
+        // read pipe and terminate childs if password was found
+        read(pipeFds[0], &returnedPassword, sizeof (returnedPassword));
+        for (i = 0; i < numberOfCpu; i++) {
+            kill(pids[i], 1); // send sigterm to childs
+        }
+
+        printf("The found password is: %s\n", returnedPassword);
+        close(pipeFds[1]);
+    }
     //    printf("Loops done: %i\n", loopsStarted);
     //    printf("Number of chars: %i\n", places);
 
     return (EXIT_SUCCESS);
-}
-
-/**
- * Extract the salt from the given encrypted passwords
- * 
- * @param encryptedPassword the encrypted password
- * @param salt the salt extracted from the given encrypted password
- */
-void getSalt(char *encryptedPassword, char *salt) {
-
-    // TODO: get the first two chars of the given encrypted password
-
 }
 
 void getChar(char *character, int index) {
