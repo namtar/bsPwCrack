@@ -14,7 +14,7 @@
 #include <sys/types.h>
 #include <signal.h>
 
-#define numberOfCpu 2
+#define numberOfCpu 4
 
 /***** Passwords *****/
 
@@ -33,7 +33,8 @@ char *bmesser = "Zzums2/rOSvk05s"; // dont know
 int places = 26 * 2 + 10;
 char characters[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 short passwordFound = 0; // set to 1 if password was found
-int loopsStarted = 0;
+//int loopsStarted = 0;
+char salt[3];
 
 
 int startValue = 0;
@@ -75,9 +76,11 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     }
 
+    char *passwordToCrack = ddosseh;
     char tryPassword[6]; // remember, this must be by one greater than the lenght of the password to check.
     tryPassword[sizeof (tryPassword) - 1] = '\0';
     int numberOfPlaces = (sizeof (tryPassword) - 1);
+    printf("NumberOfPlaces %i\n", numberOfPlaces);
 
     int interval = sizeof (characters) / numberOfCpu;
     printf("Interval: %i\n", interval);
@@ -101,14 +104,19 @@ int main(int argc, char** argv) {
         printf("Fork returned Pid: %i at increment %i\n", pid, i);
         if (pid == 0) {
             printf("Start child\n");
-            wait(5);
+            //            wait(5);
             // i am a child
             // close unneeded pipe read channel
             close(pipeFds[0]);
             // do cracking
             // write in pipe when password was found
             int LOOP_ZERO = 0;
-            doLoop(numberOfPlaces, LOOP_ZERO, tryPassword, ddosseh);
+
+            salt[0] = passwordToCrack[0];
+            salt[1] = passwordToCrack[1];
+            salt[2] = '\0';
+            printf("Salt: %s\n", salt);
+            doLoop(numberOfPlaces, LOOP_ZERO, tryPassword, passwordToCrack);
 
             //            printf("Write found password: %s\n", foundPassword);
             if (strlen(foundPassword) > 0) {
@@ -118,7 +126,7 @@ int main(int argc, char** argv) {
             close(pipeFds[1]);
             exit(EXIT_SUCCESS);
         } else if (pid < 0) {
-            printf("Fehler beim Fork");
+            printf("Fehler beim Fork\n");
             return EXIT_FAILURE;
         }
     }
@@ -144,9 +152,6 @@ int main(int argc, char** argv) {
         printf("The found password is: %s\n", returnedPassword);
         close(pipeFds[1]);
     }
-    //    printf("Loops done: %i\n", loopsStarted);
-    //    printf("Number of chars: %i\n", places);
-
     return (EXIT_SUCCESS);
 }
 
@@ -158,18 +163,13 @@ void getChar(char *character, int index) {
 
 void doLoop(int numberOfPlaces, int loopNumber, char *tryPassword, char *passwordToCrack) {
 
-    char salt[3];
-    salt[0] = passwordToCrack[0];
-    salt[1] = passwordToCrack[1];
-    salt[2] = '\0';
-
     printf("Startvalue: %i\n", startValue);
     printf("Endvalue: %i\n", endValue);
     // this is only for loop zero. This loop has to mention the start and end value
     int i;
     for (i = startValue; i < endValue; i++) {
 
-        loopsStarted++;
+        //        loopsStarted++;
 
         // if password was found exit loop
         if (passwordFound == 1) {
@@ -177,6 +177,7 @@ void doLoop(int numberOfPlaces, int loopNumber, char *tryPassword, char *passwor
         }
 
         tryPassword[loopNumber] = characters[i];
+        printf("Trypassword First Index %c\n", tryPassword[0]);
 
         if ((loopNumber + 1) < numberOfPlaces) {
             // if loop number is less than number of places then start new loop.
@@ -191,6 +192,8 @@ void doLoop(int numberOfPlaces, int loopNumber, char *tryPassword, char *passwor
                 printf("Das gesuchte Passwort ist: %s\n\n", tryPassword);
                 strcpy(foundPassword, tryPassword);
                 passwordFound = 1;
+            } else {
+                free(result);
             }
         }
     }
@@ -198,15 +201,12 @@ void doLoop(int numberOfPlaces, int loopNumber, char *tryPassword, char *passwor
 }
 
 void subLoop(int numberOfPlaces, int loopNumber, char* tryPassword, char* passwordToCrack) {
-    char salt[3];
-    salt[0] = passwordToCrack[0];
-    salt[1] = passwordToCrack[1];
-    salt[2] = '\0';
 
     int i;
     for (i = 0; i < sizeof (characters); i++) {
 
-        loopsStarted++;
+        //        loopsStarted++;
+        //        printf("LoopsStarted %i\n", loopsStarted);
 
         // if password was found exit loop
         if (passwordFound == 1) {
@@ -214,6 +214,8 @@ void subLoop(int numberOfPlaces, int loopNumber, char* tryPassword, char* passwo
         }
 
         tryPassword[loopNumber] = characters[i];
+        //        printf("LoopNumber %i\n", loopNumber);
+        //        printf("TryPassword %s\n", tryPassword);
 
         if ((loopNumber + 1) < numberOfPlaces) {
             // if loop number is less than number of places then start new loop.
@@ -221,13 +223,15 @@ void subLoop(int numberOfPlaces, int loopNumber, char* tryPassword, char* passwo
             subLoop(numberOfPlaces, newLoopNumber, tryPassword, passwordToCrack);
         }
         if (numberOfPlaces == (loopNumber + 1)) {
-            // do crypting
+            // do crypting            
             char *result = strdup(crypt(tryPassword, salt));
 
             if (strcmp(result, passwordToCrack) == 0) {
                 printf("Das gesuchte Passwort ist: %s\n\n", tryPassword);
                 strcpy(foundPassword, tryPassword);
                 passwordFound = 1;
+            } else {
+                free(result);
             }
         }
     }

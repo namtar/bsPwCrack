@@ -1,0 +1,95 @@
+drummer@Brutus:~/NetBeansProjects/bsPwCrack/dist/Debug/GNU-Linux-x86$ time ./bspwcrack 
+Start shiny password crackin'
+NumberOfPlaces 5
+Interval: 15
+Start forking
+Startvalue General: 0
+Endvalue General: 16
+Fork returned Pid: 2616 at increment 0
+Start forking
+Startvalue General: 16
+Endvalue General: 32
+Fork returned Pid: 0 at increment 0
+Start child
+Fork returned Pid: 2617 at increment 1
+Start forking
+Startvalue General: 32
+Endvalue General: 48
+Salt: I8
+Startvalue: 0
+Endvalue: 16
+Trypassword First Index a
+Fork returned Pid: 0 at increment 1
+Start child
+Fork returned Pid: 2618 at increment 2
+Start forking
+Startvalue General: 48
+Endvalue General: 62
+Salt: I8
+Startvalue: 16
+Endvalue: 32
+Trypassword First Index q
+Fork returned Pid: 2619 at increment 3
+Pid of Child: 2619
+Anzahl der Pids: 4
+Fork returned Pid: 0 at increment 2
+Fork returned Pid: 0 at increment 3
+Start child
+Start child
+Salt: I8
+Startvalue: 48
+Endvalue: 62
+Trypassword First Index W
+Salt: I8
+Startvalue: 32
+Endvalue: 48
+Trypassword First Index G
+Trypassword First Index r
+Trypassword First Index X
+Trypassword First Index H
+Trypassword First Index b
+Trypassword First Index s
+Trypassword First Index I
+Trypassword First Index Y
+Trypassword First Index c
+Trypassword First Index t
+Trypassword First Index J
+Trypassword First Index Z
+Trypassword First Index d
+Trypassword First Index u
+Trypassword First Index K
+Trypassword First Index 0
+Trypassword First Index e
+Trypassword First Index v
+Trypassword First Index L
+Trypassword First Index 1
+Trypassword First Index f
+Trypassword First Index w
+Trypassword First Index M
+Trypassword First Index 2
+Trypassword First Index g
+Trypassword First Index N
+Trypassword First Index 3
+Trypassword First Index x
+Trypassword First Index h
+Trypassword First Index O
+Trypassword First Index 4
+Trypassword First Index y
+Trypassword First Index i
+Trypassword First Index P
+Trypassword First Index 5
+Trypassword First Index z
+Trypassword First Index j
+Trypassword First Index Q
+Trypassword First Index 6
+Trypassword First Index k
+Trypassword First Index A
+Das gesuchte Passwort ist: 6Ys8P
+
+Write to Pipe
+
+The found password is: 6Ys8P
+
+real	19m34.561s
+user	0m0.000s
+sys	0m0.040s
