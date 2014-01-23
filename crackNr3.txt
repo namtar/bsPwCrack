@@ -1,0 +1,55 @@
+drummer@Brutus:~/NetBeansProjects/bsPwCrack/dist/Debug/GNU-Linux-x86$ time ./bspwcrack 
+Start shiny password crackin'
+NumberOfPlaces 3
+Interval: 15
+Start forking
+Startvalue General: 0
+Endvalue General: 16
+Fork returned Pid: 2853 at increment 0
+Start forking
+Startvalue General: 16
+Endvalue General: 32
+Fork returned Pid: 0 at increment 0
+Start child
+Fork returned Pid: 2854 at increment 1
+Start forking
+Startvalue General: 32
+Endvalue General: 48
+Salt: C.
+Startvalue: 0
+Endvalue: 16
+Trypassword First Index a
+Fork returned Pid: 0 at increment 1
+Start child
+Fork returned Pid: 2855 at increment 2
+Start forking
+Startvalue General: 48
+Endvalue General: 62
+Salt: C.
+Startvalue: 16
+Endvalue: 32
+Trypassword First Index q
+Fork returned Pid: 2856 at increment 3
+Pid of Child: 2856
+Anzahl der Pids: 4
+Fork returned Pid: 0 at increment 3
+Start child
+Salt: C.
+Startvalue: 48
+Endvalue: 62
+Trypassword First Index W
+Fork returned Pid: 0 at increment 2
+Start child
+Salt: C.
+Startvalue: 32
+Endvalue: 48
+Trypassword First Index G
+Das gesuchte Passwort ist: a7L
+
+Write to Pipe
+
+The found password is: a7L
+
+real	0m0.084s
+user	0m0.004s
+sys	0m0.040s

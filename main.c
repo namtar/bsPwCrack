@@ -76,8 +76,8 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     }
 
-    char *passwordToCrack = ddosseh;
-    char tryPassword[6]; // remember, this must be by one greater than the lenght of the password to check.
+    char *passwordToCrack = eentenh;
+    char tryPassword[7]; // remember, this must be by one greater than the lenght of the password to check.
     tryPassword[sizeof (tryPassword) - 1] = '\0';
     int numberOfPlaces = (sizeof (tryPassword) - 1);
     printf("NumberOfPlaces %i\n", numberOfPlaces);
